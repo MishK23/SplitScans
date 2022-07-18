@@ -1,35 +1,43 @@
 clf;
-myDir = dir(Original_Scans);
-myFiles = dir(fullfile(myDir,'*tif'));
-Image = imread("peppers.png");
-[Image_Height,Image_Width,Number_Of_Colour_Channels] = size(Image);
 
-Block_Size = 500;
-Number_Of_Blocks_Vertically = ceil(Image_Height/Block_Size);
-Number_Of_Blocks_Horizontally = ceil(Image_Width/Block_Size);
-Image_Blocks = struct('Blocks',[]);
+for j = 1:254
 
-Index = 1;
-for Row = 1: +Block_Size: Number_Of_Blocks_Vertically*Block_Size
-    for Column = 1: +Block_Size: Number_Of_Blocks_Horizontally*Block_Size
+   name = myFiles(j).name;
+   current_image = extractAfter(name,2);
+   Image = imread(current_image);
+   Index = 1;
+   num = 1;
+   [Image_Height,Image_Width,Number_Of_Colour_Channels] = size(Image);
+   Block_Size = 250;
+   Number_Of_Blocks_Vertically = floor(Image_Height/Block_Size);
+   Number_Of_Blocks_Horizontally = floor(Image_Width/Block_Size);
+   Image_Blocks = struct('Blocks',[]);
+
+   for Row = 1: +Block_Size: Number_Of_Blocks_Vertically*Block_Size
+     for Column = 1: +Block_Size: Number_Of_Blocks_Horizontally*Block_Size
         
-    Row_End = Row + Block_Size - 1;
-    Column_End = Column + Block_Size - 1;
+     Row_End = Row + Block_Size - 1;
+     Column_End = Column + Block_Size - 1;
         
-    if Row_End > Image_Height
+     if Row_End > Image_Height
        Row_End = Image_Height;
-    end
+     end
     
-    if Column_End > Image_Width
+     if Column_End > Image_Width
        Column_End = Image_Width;
-    end
+     end
+     
+     arr = randperm(Number_Of_Blocks_Vertically,2);
+     Temporary_Tile = Image(Row:Row_End,Column:Column_End,:);
+     Image_Blocks(Index).Blocks = Temporary_Tile;
+     if ismember(index,arr)
+       subplot(Number_Of_Blocks_Vertically,Number_Of_Blocks_Horizontally,Index); imshow(Temporary_Tile);
+       figName = append(string(num),'.jpg');
+       % saveas(fig,)
+     end
+     
+     Index = Index + 1;
     
-    Temporary_Tile = Image(Row:Row_End,Column:Column_End,:);
-    
-    %Storing blocks/tiles in structure for later use%
-    Image_Blocks(Index).Blocks = Temporary_Tile;
-    subplot(Number_Of_Blocks_Vertically,Number_Of_Blocks_Horizontally,Index); imshow(Temporary_Tile);
-    Index = Index + 1;
-    
-    end  
+     end  
+   end
 end
