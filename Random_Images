@@ -12,6 +12,30 @@ for j = 1:254
    Number_Of_Blocks_Vertically = floor(Image_Height/Block_Size);
    Number_Of_Blocks_Horizontally = floor(Image_Width/Block_Size);
    Image_Blocks = struct('Blocks',[]);
+   finalArr = strings(2000,6);
+   finalArr(1) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
+   group = extractBetween(current_image,9,10);
+   iteration = extractBetween(current_image,12,13);
+   timepoint = extractBetween(15,32);
+
+   if strcmp(group,"B2")
+       treatment = "no stress";
+   end
+   if strcmp(group,"B3")
+       treatment = "50 nM PLX";
+   end
+   if strcmp(group,"B4")
+       treatment = "5% EtOH";
+   end
+   if strcmp(group,"C2")
+       treatment = "0.5 mM H2";
+   end
+   if strcmp(group,"C3")
+       treatment = "no glucose";
+   end
+   if strcmp(group,"C4")
+       treatment = "50 nM thapsagargin";
+   end
 
    for Row = 1: +Block_Size: Number_Of_Blocks_Vertically*Block_Size
      for Column = 1: +Block_Size: Number_Of_Blocks_Horizontally*Block_Size
@@ -33,7 +57,10 @@ for j = 1:254
      if ismember(index,arr)
        subplot(Number_Of_Blocks_Vertically,Number_Of_Blocks_Horizontally,Index); imshow(Temporary_Tile);
        figName = append(string(num),'.jpg');
-       % saveas(fig,)
+       saveas(fig,figName);
+       num = num + 1;
+       numstr = string(num);
+       finalArr(num) = [numstr,current_image,group,treatment,iteration,timepoint];
      end
      
      Index = Index + 1;
@@ -41,3 +68,4 @@ for j = 1:254
      end  
    end
 end
+writematrix(finalArr,MetaData.csv);
