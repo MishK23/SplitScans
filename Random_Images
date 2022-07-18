@@ -1,6 +1,6 @@
 clf;
 myDir = dir(Original_Scans);
-myFiles = dir(fullfile(myDir,'*tif');
+myFiles = dir(fullfile(myDir,'*tif'));
 Image = imread("peppers.png");
 [Image_Height,Image_Width,Number_Of_Colour_Channels] = size(Image);
 
