@@ -1,7 +1,6 @@
-clf;
-
-for j = 1:254
-
+for j = 1:1:3528
+   
+   clf;
    name = myFiles(j).name;
    current_image = extractAfter(name,2);
    Image = imread(current_image);
@@ -13,10 +12,10 @@ for j = 1:254
    Number_Of_Blocks_Horizontally = floor(Image_Width/Block_Size);
    Image_Blocks = struct('Blocks',[]);
    finalArr = strings(2000,6);
-   finalArr(1) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
+   finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
    group = extractBetween(current_image,9,10);
    iteration = extractBetween(current_image,12,13);
-   timepoint = extractBetween(15,32);
+   timepoint = extractBetween(current_image,15,32);
 
    if strcmp(group,"B2")
        treatment = "no stress";
@@ -52,20 +51,24 @@ for j = 1:254
      end
      
      arr = randperm(Number_Of_Blocks_Vertically,2);
-     Temporary_Tile = Image(Row:Row_End,Column:Column_End,:);
-     Image_Blocks(Index).Blocks = Temporary_Tile;
-     if ismember(index,arr)
-       subplot(Number_Of_Blocks_Vertically,Number_Of_Blocks_Horizontally,Index); imshow(Temporary_Tile);
+     for z = 1:Number_Of_Blocks_Vertically
+
+       Temporary_Tile = Image(Row:Row_End,Column:Column_End,:);
+       Image_Blocks(Index).Blocks = Temporary_Tile;
+       if ismember(Index,arr)
        figName = append(string(num),'.jpg');
-       saveas(fig,figName);
+       subplot(Number_Of_Blocks_Vertically,Number_Of_Blocks_Horizontally,Index); imshow(Temporary_Tile);
+       saveas(gcf,figName,'jpg');
        num = num + 1;
        numstr = string(num);
-       finalArr(num) = [numstr,current_image,group,treatment,iteration,timepoint];
+       finalArr(num,:) = [numstr,current_image,group,treatment,iteration,timepoint];
+       end
      end
      
+     clf;
      Index = Index + 1;
     
      end  
    end
 end
-writematrix(finalArr,MetaData.csv);
+writematrix(finalArr,'TestMetaData.csv.txt');
