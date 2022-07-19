@@ -72,3 +72,5 @@ for j = 1:1:3528
    end
 end
 writematrix(finalArr,'TestMetaData.csv.txt');
+% myDir = uigetdir;;
+% myFiles = dir(fullfile(myDir,'*.tif'));
