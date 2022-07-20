@@ -78,5 +78,5 @@ for j = 1:length(myFiles)
      end
     end  
    end
-   writematrix(finalArr,'TestMetaData.txt'); %Write array into text file
+   writematrix(finalArr,'MetaData.txt'); %Write array into text file
 end
