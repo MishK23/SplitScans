@@ -1,7 +1,7 @@
 num = 1;
-finalArr = strings(5000,6);
+finalArr = strings(length(myFiles),6);
 finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
-for j = 1:length(myFiles)
+for j = 1:500
    
    clf;
    name = myFiles(j).name;
@@ -13,9 +13,9 @@ for j = 1:length(myFiles)
    Number_Of_Blocks_Vertically = floor(Image_Height/Block_Size);
    Number_Of_Blocks_Horizontally = floor(Image_Width/Block_Size);
    Image_Blocks = struct('Blocks',[]);
-   group = extractBetween(current_image,7,8);
-   iteration = extractBetween(current_image,12,13);
-   timepoint = extractBetween(current_image,1530);
+   group = extractBetween(name,11,12);
+   iteration = extractBetween(name,14,15);
+   timepoint = extractBetween(name,17,30);
 
    if strcmp(group,"B2")
        treatment = "no stress";
@@ -58,15 +58,15 @@ for j = 1:length(myFiles)
        if ismember(Index,arr)
        figName = append(string(num),'.jpg');
        subplot(Number_Of_Blocks_Vertically,Number_Of_Blocks_Horizontally,Index); imshow(Temporary_Tile);
-       saveas(gcf,figName,'jpg');
-       num = num + 1;
+       saveas(gcf,figName,'jpg');      
        numstr = string(num);
-       finalArr(num,:) = [numstr,current_image,group,treatment,iteration,timepoint];
+       finalArr((num+1),:) = [numstr,name,group,treatment,iteration,timepoint];
+       num = num + 1;
        end
        clf;
        Index = Index + 1;
      end
     end  
    end
+   writematrix(finalArr,'TestMetaData.txt');
 end
-writematrix(finalArr,'TestMetaData.txt');
