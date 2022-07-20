@@ -1,21 +1,21 @@
-for j = 1:1:3528
+num = 1;
+finalArr = strings(5000,6);
+finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
+for j = 1:length(myFiles)
    
    clf;
    name = myFiles(j).name;
    current_image = extractAfter(name,2);
    Image = imread(current_image);
    Index = 1;
-   num = 1;
    [Image_Height,Image_Width,Number_Of_Colour_Channels] = size(Image);
    Block_Size = 250;
    Number_Of_Blocks_Vertically = floor(Image_Height/Block_Size);
    Number_Of_Blocks_Horizontally = floor(Image_Width/Block_Size);
    Image_Blocks = struct('Blocks',[]);
-   finalArr = strings(2000,6);
-   finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
-   group = extractBetween(current_image,9,10);
+   group = extractBetween(current_image,7,8);
    iteration = extractBetween(current_image,12,13);
-   timepoint = extractBetween(current_image,15,32);
+   timepoint = extractBetween(current_image,1530);
 
    if strcmp(group,"B2")
        treatment = "no stress";
@@ -63,14 +63,10 @@ for j = 1:1:3528
        numstr = string(num);
        finalArr(num,:) = [numstr,current_image,group,treatment,iteration,timepoint];
        end
+       clf;
+       Index = Index + 1;
      end
-     
-     clf;
-     Index = Index + 1;
-    
-     end  
+    end  
    end
 end
-writematrix(finalArr,'TestMetaData.csv.txt');
-% myDir = uigetdir;;
-% myFiles = dir(fullfile(myDir,'*.tif'));
+writematrix(finalArr,'TestMetaData.txt');
