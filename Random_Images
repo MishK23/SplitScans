@@ -1,7 +1,7 @@
 num = 1;
 finalArr = strings(length(myFiles),6);
 finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
-for j = 1:500
+for j = 1:length(myFiles)
    
    clf;
    name = myFiles(j).name;
@@ -58,7 +58,8 @@ for j = 1:500
        if ismember(Index,arr)
        figName = append(string(num),'.jpg');
        subplot(Number_Of_Blocks_Vertically,Number_Of_Blocks_Horizontally,Index); imshow(Temporary_Tile);
-       saveas(gcf,figName,'jpg');      
+       f = gcf;
+       exportgraphics(f,figName,'BackgroundColor','none');    
        numstr = string(num);
        finalArr((num+1),:) = [numstr,name,group,treatment,iteration,timepoint];
        num = num + 1;
