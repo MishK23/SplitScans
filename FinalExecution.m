@@ -3,7 +3,7 @@
 num = 1;
 finalArr = strings(length(myFiles),6);
 finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
-for j = 1:10
+for j = 1:length(myFiles)
    
    % Reading image and getting filename, which is used to make parameters   
    clf;
