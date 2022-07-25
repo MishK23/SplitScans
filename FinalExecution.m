@@ -3,7 +3,7 @@
 num = 1;
 finalArr = strings(length(myFiles),6);
 finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
-for j = 1:10
+for j = 1:length(myFiles)
    
    % Reading image and getting filename, which is used to make parameters   
    clf;
@@ -39,34 +39,23 @@ for j = 1:10
        treatment = "50 nM thapsagargin";
    end
 
-   % Image descriptors
-     Row_End = Row + Block_Size - 1;
-     Column_End = Column + Block_Size - 1;
-        
-     if Row_End > Image_Height
-       Row_End = Image_Height;
-     end
-    
-     if Column_End > Image_Width
-       Column_End = Image_Width;
-     end
-     
-     %Pick random subimages from scan
-     arr = randperm(Number_Of_Blocks_Vertically,2);
-     for start = Block_Size: Block_Size: Image_Height-Block_Size
-       first = randi([start-Block_Size,start]);
-       Temporary_Tile = Image(first:first+Block_Size,first:first+Block_Size);
-       figName = append(string(num),'.jpg');
-       imshow(Temporary_Tile);
-       f = gcf;
-       set(gcf,'Color','none');
-       exportgraphics(f,figName,'BackgroundColor','none');    
-       numstr = string(num);
-       finalArr((num+1),:) = [numstr,name,group,treatment,iteration,timepoint];
-       num = num + 1;
-       clf;
-       Index = Index + 1;
-     end
+   %Pick random subimages from scan
+   arr = randperm(Number_Of_Blocks_Vertically,2);
+   ratio = Number_Of_Blocks_Horizontally/Number_Of_Blocks_Vertically;
+   for start = Block_Size: Block_Size: Image_Height-Block_Size
+   first = randi([start-Block_Size,start]);
+   Temporary_Tile = Image(first:first+Block_Size,ratio*first:ratio*(first+Block_Size));
+   figName = append(string(num),'.jpg');
+   imshow(Temporary_Tile);
+   f = gcf;
+   set(gcf,'Color','none');
+   exportgraphics(f,figName,'BackgroundColor','none');    
+   numstr = string(num);
+   finalArr((num+1),:) = [numstr,name,group,treatment,iteration,timepoint];
+   num = num + 1;
+   clf;
+   Index = Index + 1;
+   end
        %Create subimages, plot them, then export plots into jpg and create
        %array of parameters describing the random subimages
 end 
