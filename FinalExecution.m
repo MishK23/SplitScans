@@ -1,9 +1,11 @@
 % Setting up initial variables: num is WellIndex and finalArr contains
 % parameters which will be printed to the screen
 num = 1;
+x = zeros(20);
+y = zeros(20);
 finalArr = strings(length(myFiles),6);
 finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
-for j = 1:length(myFiles)
+for j = 1:10
    
    % Reading image and getting filename, which is used to make parameters   
    clf;
@@ -11,10 +13,8 @@ for j = 1:length(myFiles)
    current_image = extractAfter(name,2);
    Image = imread(current_image);
    Index = 1;
-   [Image_Height,Image_Width,Number_Of_Colour_Channels] = size(Image);
-   Block_Size = floor(Image_Height/3);
-   Number_Of_Blocks_Vertically = floor(Image_Height/Block_Size);
-   Number_Of_Blocks_Horizontally = floor(Image_Width/Block_Size);
+   [Image_Width,Image_Height,Number_Of_Colour_Channels] = size(Image);
+   Block_Size = 500;
    group = extractBetween(name,11,12);
    iteration = extractBetween(name,14,15);
    timepoint = extractBetween(name,17,34);
@@ -40,16 +40,21 @@ for j = 1:length(myFiles)
    end
 
    %Pick random subimages from scan
-   arr = randperm(Number_Of_Blocks_Vertically,2);
-   ratio = Number_Of_Blocks_Horizontally/Number_Of_Blocks_Vertically;
-   for start = Block_Size: Block_Size: Image_Height-Block_Size
-   first = randi([start-Block_Size,start]);
-   Temporary_Tile = Image(first:first+Block_Size,ratio*first:ratio*(first+Block_Size));
+   for i = 1:2
+   firstx = randi(Image_Width-Block_Size);
+   secondx = firstx+Block_Size;
+   firsty = randi(Image_Height-Block_Size);
+   secondy = firsty+Block_Size;
+   centerx = (firstx+secondx)/2;
+   centery = (firsty+secondy)/2;
+   x(num) = centerx;
+   y(num) = centery;
+   Temporary_Tile = Image(firstx:secondx,firsty:secondy);
    figName = append(string(num),'.jpg');
    imshow(Temporary_Tile);
    f = gcf;
-   set(gcf,'Color','none');
-   exportgraphics(f,figName,'BackgroundColor','none');    
+   set(f,'Color','none');
+   exportgraphics(f,figName,'BackgroundColor','none','Resolution',72);    
    numstr = string(num);
    finalArr((num+1),:) = [numstr,name,group,treatment,iteration,timepoint];
    num = num + 1;
@@ -59,4 +64,9 @@ for j = 1:length(myFiles)
        %Create subimages, plot them, then export plots into jpg and create
        %array of parameters describing the random subimages
 end 
+plot(x, y,'linestyle','none','marker','o')
+set(gcf,'Color','w');
+lower = Block_Size/2;
+xlim([0,Image_Width]);
+ylim([0,Image_Height]);
 writematrix(finalArr,'MetaData.txt'); %Write array into text file
