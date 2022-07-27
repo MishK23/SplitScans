@@ -59,7 +59,7 @@ for j = 1:10
    exportgraphics(f,figName,'BackgroundColor','none','Resolution',72);    
    numstr = string(num);
    %Add image parameters array element to finalArr
-   finalArr((num+1),:) = [numstr,name,group,treatment,iteration,timepoint];
+   finalArr((num+1),:) = [numstr,current_image,group,treatment,iteration,timepoint];
    num = num + 1;
    clf;
    Index = Index + 1;
