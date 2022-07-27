@@ -14,7 +14,7 @@ for j = 1:10
    Image = imread(current_image);
    Index = 1;
    [Image_Width,Image_Height,Number_Of_Colour_Channels] = size(Image);
-   Block_Size = 500;
+   Block_Size = 300;
    group = extractBetween(name,11,12);
    iteration = extractBetween(name,14,15);
    timepoint = extractBetween(name,17,34);
@@ -56,7 +56,7 @@ for j = 1:10
    %Save subplot with transparent background as a jpg file
    f = gcf;
    set(f,'Color','none');
-   exportgraphics(f,figName,'BackgroundColor','none','Resolution',72);    
+   exportgraphics(f,figName,'BackgroundColor','none','Resolution',300);    
    numstr = string(num);
    %Add image parameters array element to finalArr
    finalArr((num+1),:) = [numstr,current_image,group,treatment,iteration,timepoint];
