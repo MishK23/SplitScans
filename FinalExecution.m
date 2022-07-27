@@ -7,7 +7,7 @@ finalArr = strings(length(myFiles),6);
 finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
 for j = 1:10
    
-   % Reading image and getting filename, which is used to make parameters   
+   % Reading image and getting parameters from filename  
    clf;
    name = myFiles(j).name;
    current_image = extractAfter(name,2);
@@ -49,13 +49,16 @@ for j = 1:10
    centery = (firsty+secondy)/2;
    x(num) = centerx;
    y(num) = centery;
+   %Create subimage
    Temporary_Tile = Image(firstx:secondx,firsty:secondy);
    figName = append(string(num),'.jpg');
    imshow(Temporary_Tile);
+   %Save subplot with transparent background as a jpg file
    f = gcf;
    set(f,'Color','none');
    exportgraphics(f,figName,'BackgroundColor','none','Resolution',72);    
    numstr = string(num);
+   %Add image parameters array element to finalArr
    finalArr((num+1),:) = [numstr,name,group,treatment,iteration,timepoint];
    num = num + 1;
    clf;
@@ -64,6 +67,7 @@ for j = 1:10
        %Create subimages, plot them, then export plots into jpg and create
        %array of parameters describing the random subimages
 end 
+%Plot to make sure of random image centers
 plot(x, y,'linestyle','none','marker','o')
 set(gcf,'Color','w');
 lower = Block_Size/2;
