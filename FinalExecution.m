@@ -1,11 +1,11 @@
 % Setting up initial variables: num is WellIndex and finalArr contains
 % parameters which will be printed to the screen
 num = 1;
-x = zeros(2*length(myFiles));
-y = zeros(2*length(myFiles));
+x = zeros(length(myFiles));
+y = zeros(length(myFiles));
 finalArr = strings(length(myFiles),6);
 finalArr(1,:) = ["WellIndex","FileName","Type","Treatment","Iteration","TimePoint"];
-for j = 1:1:length((myFiles))
+for j = 1:length((myFiles))
    
    % Reading image and getting parameters from filename  
    clf;
