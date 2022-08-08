@@ -1,0 +1,6 @@
+len = myFiles(j).length;
+r = randperm(len,6);
+f = strings(6);
+for i=1:6
+ f(i) = myFiles(r(i)).name;
+end 
