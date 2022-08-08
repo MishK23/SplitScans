@@ -2,7 +2,7 @@ len = myFiles(j).length;
 r = randperm(len,6);
 f = strings(6);
 for i=1:6
- f(i) = myFiles(r(i)).name; %% or just myFiles(r(i));
- read append("https://www.seas.upenn.edu/~rajlab/img/",f(i));
+ f(i) = myFiles(r(i));
+ *image: append("https://www.seas.upenn.edu/~rajlab/img/",f(i));
 end 
 %% Get the images from online.
